@@ -1,0 +1,108 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Added viewport for responsiveness -->
+    <title>Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="chat-container">
+        <h2>Chat Room</h2>
+
+        <div id="search-bar">
+            <input type="text" id="search-input" placeholder="Search for a friend..." />
+            <button id="search-btn">Search</button>
+        </div>
+         <ul id="search-results"></ul> 
+         
+          <div id="messages">
+           {% for message in messages %}
+               <div class="message">
+                   <strong>{{ message.user }}</strong> <em>{{ message.timestamp }}</em>
+                  <p>{{ message.text }}</p>
+               </div>
+           {% endfor %}
+         </div>
+
+    
+       <form method="POST" action="/chat">
+          <div>
+             <input type="text" name="message" placeholder="Type your message here..." required aria-label="Message"> <!-- Added aria-label for accessibility -->
+          </div>
+          <button type="submit">Send</button>
+       </form>
+    
+       <a href="/logout">Logout</a>
+
+    </div>
+
+    <!-- Optional: Include JavaScript for real-time updates or enhancements -->
+    <script src="{{ url_for('static', filename='chat.js') }}"></script>
+</body>
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .message {
+            margin: 10px 0;
+        }
+        .message.sent {
+            text-align: right;
+        }
+        .message.received {
+            text-align: left;
+        }
+        .message p {
+            display: inline-block;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #e0f7fa;
+            max-width: 70%;
+        }
+        .message.sent p {
+            background-color: #c8e6c9;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h2>Chat with {{ receiver.username }}</h2>
+        <div>
+            {% for message in messages %}
+                <div class="message {{ 'sent' if message.sender_id == current_user_id else 'received' }}">
+                    <p>{{ message.text }}</p>
+                    <small>{{ message.timestamp }}</small>
+                </div>
+            {% endfor %}
+        </div>
+        <form method="POST">
+            <input type="text" name="message" placeholder="Type your message here" required>
+            <button type="submit">Send</button>
+        </form>
+        <a href="/search">Back to Search</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Added viewport for responsiveness -->
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="login-container">
+    <h2 class="login-title">Login</h2>
+
+    <form method="POST" action="/login">
+        <div class="input-group">
+            <label for="username">Username:</label> <!-- Added label for accessibility -->
+            <input type="text" id="username" name="username" placeholder="Enter username" required>
+        </div>
+
+        <div class="input-group">
+            <label for="password">Password:</label> <!-- Added label for accessibility -->
+            <input type="password" id="password" name="password" placeholder="Password" required>
+        </div>
+
+        <button type="submit" class="login-button"> <a href="/chat">Login</a></button>
+       
+    </form>
+    <p class="register">Don't have an account? <a href="/register">Register here</a></p>
+    
+  </div>  
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash-messages"> <!-- Added a class for potential styling -->
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+</body>
+</html>
